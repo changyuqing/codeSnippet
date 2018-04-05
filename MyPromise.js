@@ -98,6 +98,52 @@ MyPromise.prototype.then = function (onFulfilled, onRejected) {
 	return promise2;
 }
 
+MyPromise.prototype.catch = function(onRejected){
+	return this.then(null,onRejected);
+}
+
+MyPromise.all = function(promises){
+	let length = promises.length;
+	let num = 0;
+	let result=[];
+	return new MyPromise(function(resolve,reject){
+		promises.forEach((promise)=>{
+			
+			promise.then(function(data){
+				num++;
+				result.push(data);
+				if(num===length){
+					resolve(result);
+				}
+			},function(err){
+				reject(err);
+			})
+		})
+	});
+	
+}
+MyPromise.race = function(promises){
+	return new MyPromise(function(resolve,reject){
+		promises.forEach((promise)=>{	
+			promise.then(function(data){
+					resolve(data);
+			},function(err){
+				reject(err);
+			})
+		})
+	});
+	
+}
+MyPromise.reject = function(reason){
+	return new MyPromise(function(resolve,reject){
+		reject(reason);
+	})
+}
+MyPromise.resolve = function(value){
+	return new MyPromise(function(resolve,reject){
+		resolve(value);
+	})
+}
 function resolvePromise(promise, x, resolve, reject) {
 	if(x===undefined){
 		resolve(x);
