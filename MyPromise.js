@@ -102,6 +102,10 @@ MyPromise.prototype.catch = function(onRejected){
 	return this.then(null,onRejected);
 }
 
+MyPromise.prototype.finally = function(onFinally){
+	return this.then(onFinally,onFinally);
+}
+
 MyPromise.all = function(promises){
 	let length = promises.length;
 	let num = 0;
